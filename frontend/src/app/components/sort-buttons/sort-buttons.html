@@ -1,0 +1,15 @@
+<div class="sort-buttons">
+  @for (opt of options; track opt) {
+
+    <button class="sort-button"
+      [class.selected]="opt.value === selectedValue"
+      (click)="selectOption(opt)">
+      @if (opt.icon) {
+        <svg>
+          <use [attr.href]="'/icons/_icons.svg#'+opt.icon"></use>
+        </svg>
+      }
+      {{ opt.label }}
+    </button>
+  }
+</div>

@@ -1,0 +1,20 @@
+@import "./variables";
+
+@mixin category-card-colors($bg, $border:transparent) {
+  h2 {color: $category-title-color}
+  background-color: $bg;
+  border: 1px solid $border;
+  color: $category-description-color
+}
+
+@mixin default-colors {
+  @include category-card-colors($category-default-background);
+}
+
+@mixin hover-colors {
+  @include category-card-colors($category-hover-background);
+}
+
+@mixin selected-colors {
+  @include category-card-colors($category-selected-background, $category-selected-border);
+}

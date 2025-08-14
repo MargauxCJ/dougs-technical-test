@@ -1,0 +1,9 @@
+<div class="category-card-container">
+  @if (category.group; as group) {
+    <div class="group-tag" [ngClass]="group.color">
+      {{group.name}}
+    </div>
+  }
+  <h2>{{category.wording}}</h2>
+  <p>{{category.description ? category.description : "Aucune description."}}</p>
+</div>

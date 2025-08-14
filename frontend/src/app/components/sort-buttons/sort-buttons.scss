@@ -1,0 +1,7 @@
+@use "../../../styles/buttons" as buttons;
+
+.sort-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 0 16px;
+}

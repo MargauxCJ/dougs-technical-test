@@ -1,0 +1,24 @@
+@import "./variables";
+
+$group-colors: (
+  blue: $blue,
+  red: $red,
+  yellow: $yellow,
+  purple: $purple,
+  green: $green,
+  pink: $pink
+);
+
+@mixin group-tag($color) {
+  background-color: rgba($color,0.1);
+  color: $color;
+  border-radius: 1001px;
+  padding: 2px 12px;
+  font-size: 12px;
+}
+
+@each $name, $color in $group-colors {
+  .m-#{$name} {
+    @include group-tag($color);
+  }
+}
