@@ -8,11 +8,12 @@
 </header>
 
 <div class="body-container">
-  <div class="search-row">
-  <app-search-bar></app-search-bar>
+  <div class="search-row search-container">
+    <app-search-bar (inputChange)="onInputSearch($event)"/>
+    <app-select [options]="categoriesGroupOptions" ></app-select>
   </div>
   <div class="categories-grid">
-    @for (category of (displayedCategories$|async); track category) {
+    @for (category of categoriesStore.filteredCategories(); track category) {
       <app-category-card [category]="category"></app-category-card>
     }
   </div>

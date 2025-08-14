@@ -12,9 +12,10 @@ $group-colors: (
 @mixin group-tag($color) {
   background-color: rgba($color,0.1);
   color: $color;
-  border-radius: 1001px;
+  border-radius: 100px;
   padding: 2px 12px;
   font-size: 12px;
+  margin-bottom: 4px;
 }
 
 @each $name, $color in $group-colors {

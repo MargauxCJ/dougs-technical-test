@@ -1,8 +1,9 @@
 @import "./styles/_variables";
 @import "./styles/_groups";
 @import "./styles/_buttons";
+@import "./styles/_categories";
+@import "./styles/_forms";
 
-//SEMI-BOLD (600)
 @font-face {
   font-family: 'Eina03';
   font-weight: 600;
@@ -29,37 +30,4 @@ h2 {
   font-family: 'Eina03', sans-serif;
   font-weight: 600;
   font-size: 14px;
-}
-
-//BUTTONS
-.sort-button {
-    padding: 8px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    background-color: transparent;
-    color: $medium;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    svg {
-      color: $medium;
-      width: 14px;
-      height: 14px;
-      margin-right: 8px;
-    }
-
-    &.selected {
-      background-color: $category-selected-background;
-      color: $blue;
-
-      svg {
-        color: $blue;
-      }
-    }
-}
-
-.primary-button {
-  @include button($blue, white);
 }

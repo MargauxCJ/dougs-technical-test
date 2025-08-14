@@ -1,10 +1,8 @@
+import {Group} from './group.model';
+
 export interface Category {
   id: number;
-  group?: {
-    id: number;
-    name: string;
-    color: string;
-  };
+  group?: Group;
   wording: string;
   description: string;
 }

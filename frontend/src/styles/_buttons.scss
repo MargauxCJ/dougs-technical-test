@@ -15,3 +15,36 @@
     opacity: 0.5;
   }
 }
+
+.sort-button {
+  padding: 8px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: $medium;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    color: $medium;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+  }
+
+  &.selected {
+    background-color: $selected-background;
+    color: $blue;
+
+    svg {
+      color: $blue;
+    }
+  }
+}
+
+.primary-button {
+  @include button($blue, white);
+}
+

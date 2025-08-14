@@ -1,20 +1,47 @@
 @import "./variables";
 
+$category-default-background: white;
+$category-default-border: $light;
+
+$category-hover-background: #F3F5F8;
+$category-hover-border: $light;
+
+$category-selected-background: $selected-background;
+$category-selected-border: $blue;
+
 @mixin category-card-colors($bg, $border:transparent) {
-  h2 {color: $category-title-color}
+  h2 {color: $dark}
   background-color: $bg;
   border: 1px solid $border;
-  color: $category-description-color
+  color: $description-color;
 }
 
-@mixin default-colors {
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  cursor: pointer;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px 24.5px;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  h2 {
+    margin: 4px 0
+  }
+
   @include category-card-colors($category-default-background);
-}
 
-@mixin hover-colors {
-  @include category-card-colors($category-hover-background);
-}
+  &:hover {
+    @include category-card-colors($category-hover-background);
+  }
 
-@mixin selected-colors {
-  @include category-card-colors($category-selected-background, $category-selected-border);
+  &:active {
+    @include category-card-colors($category-selected-background, $category-selected-border);
+  }
 }

@@ -9,8 +9,29 @@ export interface SortOption {
 
 @Component({
   selector: 'app-sort-buttons',
-  templateUrl: './sort-buttons.html',
-  styleUrls: ['./sort-buttons.scss'],
+  template: `
+    <div class="sort-buttons">
+      @for (opt of options; track opt) {
+        <button class="sort-button"
+                [class.selected]="opt.value === selectedValue"
+                (click)="selectOption(opt)">
+          @if (opt.icon) {
+            <svg>
+              <use [attr.href]="'/icons/_icons.svg#'+opt.icon"></use>
+            </svg>
+          }
+          {{ opt.label }}
+        </button>
+      }
+    </div>
+  `,
+  styles: [`
+    .sort-buttons {
+      display: flex;
+      gap: 8px;
+      margin: 0 16px;
+    }
+  `],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -20,7 +41,6 @@ export interface SortOption {
   ]
 })
 export class SortButtonsComponent implements ControlValueAccessor {
-
   @Input() options: SortOption[] = [];
   @Output() selectionChange = new EventEmitter<string>();
 

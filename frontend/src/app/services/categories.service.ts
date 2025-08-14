@@ -32,20 +32,13 @@ export class CategoriesService {
       )
   }
 
-  public getGroupedCategories(): Observable<Record<number, { group: Category['group'], categories: Category[] }>> {
-    return this.getVisibleCategories().pipe(
+  public getAllGroupNames(): Observable<string[]> {
+    return this.getAllCategories().pipe(
       map(categories => {
-        return categories.reduce((acc, category) => {
-          const groupId = category.group?.id ?? -1;
-          if (!acc[groupId]) {
-            acc[groupId] = {
-              group: category.group ?? { id: -1, name: 'Non catégorisé', color: '' },
-              categories: []
-            };
-          }
-          acc[groupId].categories.push(category);
-          return acc;
-        }, {} as Record<number, { group: Category['group'], categories: Category[] }>);
+        const groupNames = categories
+          .map(cat => cat.group?.name)
+          .filter((name): name is string => !!name);
+        return Array.from(new Set(groupNames));
       })
     );
   }
