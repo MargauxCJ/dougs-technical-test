@@ -8,8 +8,7 @@ const API_PREFIX = '/api/';
   providedIn: 'root'
 })
 export class CategoryService {
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
   public getAllCategories(): Observable<Category[]>  {
     return this.http.get<Category[]>(API_PREFIX+'all-categories');
@@ -20,7 +19,7 @@ export class CategoryService {
   }
 
   public getVisibleCategories(): Observable<Category[]> {
-       return forkJoin({
+    return forkJoin({
       all: this.getAllCategories(),
       visible: this.getVisibleCategoriesIds(),
     })
@@ -30,15 +29,5 @@ export class CategoryService {
           return all.filter(cat => visibleIds.includes(cat.id));
         })
       )
-  }
-  public getAllGroupNames(): Observable<string[]> {
-    return this.getAllCategories().pipe(
-      map(categories => {
-        const groupNames = categories
-          .map(cat => cat.group?.name)
-          .filter((name): name is string => !!name);
-        return Array.from(new Set(groupNames));
-      })
-    );
   }
 }

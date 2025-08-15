@@ -1,80 +1,112 @@
-import {computed, inject, Injectable, signal, Signal} from '@angular/core';
-import {Category} from '../models/category.model';
-import {CategoryService} from '../services/category.service';
-import {Group} from '../models/group.model';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
+import { Category } from '../models/category.model';
+import { CategoryService } from '../services/category.service';
+import { Group } from '../models/group.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesStore {
-  private categoryService = inject(CategoryService);
 
-  public categories = signal<Category[]>([]);
-  public search = signal('');
-  public selectGroup = signal<number | null>(null);
-  public sort = signal<string>('alphabet');
+  private categories$ = new BehaviorSubject<Category[]>([]);
+  private search$ = new BehaviorSubject<string>('');
+  private selectGroup$ = new BehaviorSubject<number | null>(null);
+
+  public sort$ = new BehaviorSubject<string>('alphabet');
+
+  constructor(private categoryService: CategoryService) {
+    this.loadCategories();
+  }
 
   public loadCategories() {
     this.categoryService.getVisibleCategories().subscribe(categories => {
-      this.categories.set(categories);
+      this.categories$.next(categories);
     });
   }
 
-  public groups: Signal<Group[]> = computed(() => {
-    const allGroups = this.categories()
-      .map(category => category.group)
-
-    const uniqueGroups: Group[] = [];
-    const seen = new Set<number>();
-
-    allGroups.forEach(g => {
-      if (!seen.has(g.id)) {
-        seen.add(g.id);
-        uniqueGroups.push(g);
+  public groups$ = this.categories$.pipe(
+    map(categories => {
+      const group: Group[] = [];
+      const seen = new Set<number>();
+      for (const category of categories) {
+        if (category.group && !seen.has(category.group.id)) {
+          seen.add(category.group.id);
+          group.push(category.group);
+        }
       }
-    });
+      return group;
+    })
+  );
 
-    return uniqueGroups;
-  });
+  public filteredCategories$ = combineLatest([
+    this.categories$,
+    this.search$,
+    this.selectGroup$,
+    this.sort$
+  ]).pipe(
+    map(([categories, search, group, sort]) => {
+      let res: Category[] = [...categories];
 
-  public categoriesByGroup: Signal<{ group: Group; categories: Category[] }[]> = computed(() => {
-    const groups = this.groups();
-    const cats = this.filteredCategories();
+      if (search) {
+        res = res.filter(cat =>
+          this.normalizeText(cat.wording)
+            .includes(this.normalizeText(search))
+        );
+      }
 
-    return groups.map(group => ({
-      group,
-      categories: cats.filter(c => c.group?.id === group.id)
-    })).filter(g => g.categories.length > 0);
-  });
+      if (group) {
+        res = res.filter((cat: Category) => cat.group?.id === group);
+      }
 
-  public filteredCategories: Signal<Category[]> = computed(() => {
-    let result = this.categories();
+      if (sort === 'alphabet') {
+        res.sort((a, b) => a.wording.localeCompare(b.wording));
+      } else if (sort === 'group') {
+        res.sort((a, b) => (a.group?.id ?? -1) - (b.group?.id ?? -1));
+      }
 
-    if (this.search()) {
-      const search = this.search()!
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-zA-Z0-9 ]/g, '')
-        .toLowerCase();
+      return res;
+    })
+  );
 
-      result = result.filter((category: Category) =>
-        category.wording
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^a-zA-Z0-9 ]/g, '')
-          .toLowerCase()
-          .includes(search)
-      );
-    }
+  public categoriesByGroup$ = combineLatest([this.groups$, this.filteredCategories$]).pipe(
+    map(([groups, categories]) => {
+      const res = groups
+        .map((group: Group) => ({
+          group,
+          categories: categories.filter(c => c.group?.id === group.id)
+        }))
+        .filter(g => g.categories.length > 0);
 
-    if (this.selectGroup()) {
-      result = result.filter((category: Category) => category.group?.id === this.selectGroup());
-    }
+      // There is no such case in the visibleCategories List, but group is optional in Category model
+      const  uncategorized = categories.filter(c => !c.group);
+      if (uncategorized.length > 0) {
+        res.push({
+          group: { id: -1, name: 'Autres', color: 'grey' },
+          categories: uncategorized
+        });
+      }
 
-    if (this.sort() === 'alphabet') {
-      result = [...result].sort((a, b) => a.wording.localeCompare(b.wording));
-    } else if (this.sort() === 'group') {
-      result = [...result].sort((a, b) => (a.group?.id ?? -1) - (b.group?.id ?? -1));
-    }
+        return res
+      }
+    )
+  );
 
-    return result;
-  });
+  public setSearch(value: string): void {
+    this.search$.next(value);
+  }
+
+  public setGroup(groupId: number | null): void {
+    this.selectGroup$.next(groupId);
+  }
+
+  public setSort(value: string): void {
+    this.sort$.next(value);
+  }
+
+  //TODO: Get this function in a text.service or something like that ?
+  protected normalizeText(text: string): string {
+    return text.normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9 ]/g, '')
+      .toLowerCase()
+  }
 }

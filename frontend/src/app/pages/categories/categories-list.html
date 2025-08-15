@@ -1,54 +1,61 @@
 <div class="body-container">
-<header>
-  <h1>Catégorie</h1>
-  <app-sort-buttons
-    (selectionChange)="onSortSelected($event)"
-    [(ngModel)]="selectedSort"
-    [options]="sortOptions">
-  </app-sort-buttons>
-</header>
 
-<div class="list-container">
-  <div class="large-row search-container">
-    <app-search-bar (inputChange)="onInputSearch($event)"/>
-    <app-select
-      [options]="categoriesStore.groups()"
-      [labelKey]="'name'"
-      [defaultOption]="{value: 0, label: 'Tous les groupes de catégories'}"
-      (selectionChange)="onGroupSelect($event)">
-    </app-select>
-  </div>
-  <div class="table-grid">
-    @if (categoriesStore.sort() === 'alphabet') {
-      @for (category of categoriesStore.filteredCategories(); track category) {
-        <app-category-card
-          [category]="category"
-          [isCategorySelected]="categorySelected?.id === category.id"
-          (selection)="getSelectedCategory($event)"
-        ></app-category-card>
-      }
-    } @else {
-      @for (categoriesByGroup of categoriesStore.categoriesByGroup(); track categoriesByGroup.group.id) {
-        <div class="large-row group-title" [ngClass]="categoriesByGroup.group.color">
-          {{ categoriesByGroup.group.name }}
-        </div>
+  <header>
+    <h1>Catégorie</h1>
+    <app-sort-buttons
+      [ngModel]="sort$|async"
+      (ngModelChange)="categoriesStore.setSort($event)"
+      [options]="sortOptions">
+    </app-sort-buttons>
+  </header>
 
-        @for (category of categoriesByGroup.categories; track category) {
+  <div class="list-container">
+
+    <!--  Filters & Search  -->
+    <div class="large-row search-container">
+      <app-search-bar (inputChange)="categoriesStore.setSearch($event)"/>
+      <app-select
+        [options]="groups$|async"
+        [labelKey]="'name'"
+        [defaultOption]="{value: 0, label: 'Tous les groupes de catégories'}"
+        (selectionChange)="onGroupSelect($event)">
+      </app-select>
+    </div>
+
+    <!--  Categories List  -->
+    <div class="table-grid">
+      @if ((sort$|async) === 'alphabet') {
+        @for (category of (categories$|async); track category) {
           <app-category-card
             [category]="category"
             [isCategorySelected]="categorySelected?.id === category.id"
-            [showTag]="false"
             (selection)="getSelectedCategory($event)"
           ></app-category-card>
         }
-      }
-    }
-  </div>
-</div>
+      } @else {
+        @for (categoriesByGroup of (categoriesByGroup$|async); track categoriesByGroup.group.id) {
+          <div class="large-row group-title" [ngClass]="categoriesByGroup.group.color">
+            {{ categoriesByGroup.group.name }}
+          </div>
 
-<footer>
-  <button class="primary-button" [class.disabled]="!categorySelected" [disabled]="!categorySelected">Sélectionner la
-    catégorie
-  </button>
-</footer>
+          @for (category of categoriesByGroup.categories; track category) {
+            <app-category-card
+              [category]="category"
+              [isCategorySelected]="categorySelected?.id === category.id"
+              [showTag]="false"
+              (selection)="getSelectedCategory($event)"
+            ></app-category-card>
+          }
+        }
+      }
+    </div>
+  </div>
+
+  <footer>
+    <button class="primary-button"
+            [class.disabled]="!categorySelected"
+            [disabled]="!categorySelected">
+      Sélectionner la catégorie
+    </button>
+  </footer>
 </div>

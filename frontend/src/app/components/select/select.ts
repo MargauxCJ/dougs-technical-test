@@ -30,13 +30,13 @@ export class Select<T extends Record<string, any>> implements ControlValueAccess
 
   //I decide that for this select, we always want id as valueKey
   @Output() public selectionChange = new EventEmitter<number|null>();
-  public selectedValue = this.defaultOption.value;
+  public selectedValue: any;
 
   onChange = (value: number) => {};
   onTouched = () => {};
 
   public ngOnInit(): void {
-    this.selectedValue = this.defaultOption?.value ?? null;
+    this.selectedValue = this.defaultOption?.value ?? null
   }
 
   writeValue(value: number): void {

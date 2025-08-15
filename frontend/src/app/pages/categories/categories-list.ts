@@ -21,30 +21,21 @@ import {CommonModule} from '@angular/common';
   templateUrl: './categories-list.html',
   styleUrl: './categories-list.scss'
 })
-export class CategoriesList implements OnInit {
+export class CategoriesList{
   public categoriesStore: CategoriesStore = inject(CategoriesStore);
+  public categories$ = this.categoriesStore.filteredCategories$;
+  public categoriesByGroup$ = this.categoriesStore.categoriesByGroup$;
+  public groups$ = this.categoriesStore.groups$;
+  public sort$ = this.categoriesStore.sort$;
+
   public categorySelected: Category;
   public sortOptions: SortOption[] = [
     { label: 'Ordre alphabétique', value: 'alphabet', icon: 'icon-alphabet'},
     { label: 'Groupe de catégorie', value: 'group', icon: 'icon-group'},
   ];
 
-  public selectedSort = 'alphabet';
-
-  public ngOnInit(): void {
-    this.categoriesStore.loadCategories();
-  }
-
-  public onSortSelected(value: string) {
-    this.categoriesStore.sort.set(value)
-  }
-
-  public onInputSearch(value: string) {
-    this.categoriesStore.search.set(value)
-  }
-
   public onGroupSelect(value: any) {
-    this.categoriesStore.selectGroup.set(Number(value));
+    this.categoriesStore.setGroup(Number(value));
   }
 
   public getSelectedCategory(value: Category) {
