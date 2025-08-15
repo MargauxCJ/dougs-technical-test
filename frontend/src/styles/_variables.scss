@@ -12,10 +12,22 @@ $purple: #A76DEB;
 $green: #4AC18E;
 $pink: #FF8CC1;
 
-//category-card colors
+$light-blue: #F1F7FC;
+$light-red: #FFECE6;
+$light-yellow: #FFF5BF;
+$light-purple: #ebe0ff;
+$light-green: #e8fff4;
+$light-pink: #ffeaf3;
+
 $selected-background: #F1F7FC;
-$description-color: #636970;
 
+$text-color: $dark;
+$bg: #F3F5F8;
+$container-bg: $white;
 
-//grid variables
+//borders
 $border: 1px solid $light;
+$border-radius-container: 4px;
+$border-radius-btn: 4px;
+$border-radius-input: 4px;
+

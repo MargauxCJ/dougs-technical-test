@@ -7,7 +7,7 @@ const API_PREFIX = '/api/';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriesService {
+export class CategoryService {
   constructor(private http: HttpClient) {
   }
 

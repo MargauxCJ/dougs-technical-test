@@ -5,7 +5,7 @@ import {NgClass} from '@angular/common';
 @Component({
   selector: 'app-category-card',
   imports: [
-    NgClass
+    NgClass,
   ],
   templateUrl: './category-card.html',
   styleUrl: './category-card.scss'
@@ -13,6 +13,7 @@ import {NgClass} from '@angular/common';
 export class CategoryCard {
   @Input() public category: Category;
   @Input() public isCategorySelected?: boolean = false;
+  @Input() public showTag: boolean = true;
   @Output() public selection = new EventEmitter<Category>();
 
   public selectCategory() {

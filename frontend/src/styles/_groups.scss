@@ -1,25 +1,22 @@
-@import "./variables";
+@use "sass:map";
+@use "./variables";
 
 $group-colors: (
-  blue: $blue,
-  red: $red,
-  yellow: $yellow,
-  purple: $purple,
-  green: $green,
-  pink: $pink
+  blue: (text: variables.$blue, bg: variables.$light-blue),
+  red: (text: variables.$red, bg: variables.$light-red),
+  yellow: (text: variables.$yellow, bg: variables.$light-yellow),
+  purple: (text: variables.$purple, bg: variables.$light-purple),
+  green: (text: variables.$green, bg: variables.$light-green),
+  pink: (text: variables.$pink, bg: variables.$light-pink),
 );
 
-@mixin group-tag($color) {
-  background-color: rgba($color,0.1);
+@mixin group-tag-colors($color, $bg) {
+  background-color: $bg;
   color: $color;
-  border-radius: 100px;
-  padding: 2px 12px;
-  font-size: 12px;
-  margin-bottom: 4px;
 }
 
 @each $name, $color in $group-colors {
-  .m-#{$name} {
-    @include group-tag($color);
+  .m-#{"" + $name} {
+    @include group-tag-colors(map.get($color, text), map.get($color, bg));
   }
 }

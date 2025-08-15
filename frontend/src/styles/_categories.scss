@@ -1,6 +1,9 @@
-@import "./variables";
+@use "./variables" as *;
 
-$category-default-background: white;
+//category-card colors spec
+$description-color: #636970;
+
+$category-default-background: $white;
 $category-hover-background: #F3F5F8;
 $category-selected-background: $selected-background;
 $category-selected-border: $blue;

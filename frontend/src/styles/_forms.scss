@@ -1,10 +1,10 @@
-@import "./variables";
+@use "./variables" as *;
 
 input[type=text].search-bar {
   box-sizing: border-box;
   color: $dark;
   border: $border;
-  border-radius: 4px;
+  border-radius: $border-radius-input;
   background-image: url('../../public/icons/search-icon.svg');
   background-position: 10px center;
   background-repeat: no-repeat;
@@ -17,8 +17,8 @@ input[type=text].search-bar {
 
 select {
   border: $border;
-  background-color: white;
+  background-color: $white;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: $border-radius-input;
   color: $dark;
 }

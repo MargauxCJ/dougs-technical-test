@@ -1,12 +1,11 @@
-import { Injectable, signal, computed, inject, Signal } from '@angular/core';
-import { Category } from '../models/category.model';
-import { CategoriesService } from '../services/categories.service';
-import { Group } from '../models/group.model';
-import {CategoriesList} from '../pages/categories/categories-list';
+import {computed, inject, Injectable, signal, Signal} from '@angular/core';
+import {Category} from '../models/category.model';
+import {CategoryService} from '../services/category.service';
+import {Group} from '../models/group.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesStore {
-  private categoryService = inject(CategoriesService);
+  private categoryService = inject(CategoryService);
 
   public categories = signal<Category[]>([]);
   public search = signal('');
@@ -36,11 +35,34 @@ export class CategoriesStore {
     return uniqueGroups;
   });
 
+  public categoriesByGroup: Signal<{ group: Group; categories: Category[] }[]> = computed(() => {
+    const groups = this.groups();
+    const cats = this.filteredCategories();
+
+    return groups.map(group => ({
+      group,
+      categories: cats.filter(c => c.group?.id === group.id)
+    })).filter(g => g.categories.length > 0);
+  });
+
   public filteredCategories: Signal<Category[]> = computed(() => {
     let result = this.categories();
 
     if (this.search()) {
-      result = result.filter((category: Category) => category.wording.toLowerCase().includes(this.search()!.toLowerCase()));
+      const search = this.search()!
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9 ]/g, '')
+        .toLowerCase();
+
+      result = result.filter((category: Category) =>
+        category.wording
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-zA-Z0-9 ]/g, '')
+          .toLowerCase()
+          .includes(search)
+      );
     }
 
     if (this.selectGroup()) {

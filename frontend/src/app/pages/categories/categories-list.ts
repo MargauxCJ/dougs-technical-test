@@ -6,15 +6,17 @@ import {FormsModule} from '@angular/forms';
 import {CategoriesStore} from '../../stores/categories.store';
 import {Select} from '../../components/select/select';
 import {Category} from '../../models/category.model';
+import {CommonModule} from '@angular/common';
 
 @Component({
-  selector: 'app-categories',
+  selector: 'app-categories-list',
   imports: [
     CategoryCard,
     Search,
     SortButtonsComponent,
     FormsModule,
-    Select
+    Select,
+    CommonModule
   ],
   templateUrl: './categories-list.html',
   styleUrl: './categories-list.scss'

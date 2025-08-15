@@ -1,7 +1,7 @@
 <div class="category-card" [class.selected]="isCategorySelected" (click)="selectCategory()">
-  @if (category.group; as group) {
-    <div class="group-tag" [ngClass]="group.color">
-      {{group.name}}
+  @if (category.group && showTag === true) {
+    <div class="group-tag" [ngClass]="category.group.color">
+      {{category.group.name}}
     </div>
   }
   <h2>{{category.wording}}</h2>
