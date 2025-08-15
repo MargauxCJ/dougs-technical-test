@@ -2,6 +2,7 @@ import { Injectable, signal, computed, inject, Signal } from '@angular/core';
 import { Category } from '../models/category.model';
 import { CategoriesService } from '../services/categories.service';
 import { Group } from '../models/group.model';
+import {CategoriesList} from '../pages/categories/categories-list';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesStore {
@@ -12,17 +13,15 @@ export class CategoriesStore {
   public selectGroup = signal<number | null>(null);
   public sort = signal<string>('alphabet');
 
-  loadCategories() {
+  public loadCategories() {
     this.categoryService.getVisibleCategories().subscribe(categories => {
-      console.log('Loaded categories:', categories);
       this.categories.set(categories);
     });
   }
 
   public groups: Signal<Group[]> = computed(() => {
     const allGroups = this.categories()
-      .map(c => c.group)
-      .filter((g): g is Group => !!g);
+      .map(category => category.group)
 
     const uniqueGroups: Group[] = [];
     const seen = new Set<number>();
@@ -41,12 +40,11 @@ export class CategoriesStore {
     let result = this.categories();
 
     if (this.search()) {
-      const searchLower = this.search()!.toLowerCase();
-      result = result.filter(c => c.wording.toLowerCase().includes(searchLower));
+      result = result.filter((category: Category) => category.wording.toLowerCase().includes(this.search()!.toLowerCase()));
     }
 
     if (this.selectGroup()) {
-      result = result.filter(c => c.group?.id === this.selectGroup());
+      result = result.filter((category: Category) => category.group?.id === this.selectGroup());
     }
 
     if (this.sort() === 'alphabet') {

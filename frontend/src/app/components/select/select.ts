@@ -1,28 +1,19 @@
-import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from '@angular/core';
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Group} from '../../models/group.model';
-import {JsonPipe} from '@angular/common';
-
-export interface SelectOption {
-  label: string;
-  value: number;
-}
 
 @Component({
   selector: 'app-select',
   template: `
-    {{options|json}}
-    <select [ngModel]="selectedValue" (change)="onSelect($event)">
-      <option [value]="0">Tous les groupes de catégories</option>
+    <select [ngModel]="selectedValue" (ngModelChange)="onSelect($event)">
+      <option [value]="defaultOption.value">{{defaultOption.label}}</option>
       @for (option of options; track option) {
-        <option [value]="option.id">{{ option.name }}</option>
+        <option [value]="option['id']">{{ option[labelKey] }}</option>
       }
     </select>
   `,
   styles: [``],
   imports: [
     FormsModule,
-    JsonPipe
   ],
   providers: [
     {
@@ -32,17 +23,24 @@ export interface SelectOption {
     }
   ]
 })
-export class Select implements ControlValueAccessor {
-  @Input() options: Group[] = [];
-  @Output() selectionChange = new EventEmitter<number>();
+export class Select<T extends Record<string, any>> implements ControlValueAccessor, OnInit {
+  @Input() public options: T[] = [];
+  @Input() public defaultOption?: {value: any, label: string} = {value: null, label: 'Tous'};
+  @Input() public labelKey: keyof T = 'label' as keyof T;
 
-  selectedValue: number | null = 0;
+  //I decide that for this select, we always want id as valueKey
+  @Output() public selectionChange = new EventEmitter<number|null>();
+  public selectedValue = this.defaultOption.value;
 
   onChange = (value: number) => {};
   onTouched = () => {};
 
+  public ngOnInit(): void {
+    this.selectedValue = this.defaultOption?.value ?? null;
+  }
+
   writeValue(value: number): void {
-    this.selectedValue = value;
+    this.selectedValue = value ?? this.defaultOption.value;
   }
 
   registerOnChange(fn: any): void {
@@ -53,8 +51,7 @@ export class Select implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  onSelect(event: Event) {
-    const value = Number((event.target as HTMLSelectElement).value);
+  onSelect(value: any) {
     this.selectedValue = value;
     this.onChange(this.selectedValue);
     this.onTouched();

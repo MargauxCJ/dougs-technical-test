@@ -31,7 +31,6 @@ export class CategoriesService {
         })
       )
   }
-
   public getAllGroupNames(): Observable<string[]> {
     return this.getAllCategories().pipe(
       map(categories => {

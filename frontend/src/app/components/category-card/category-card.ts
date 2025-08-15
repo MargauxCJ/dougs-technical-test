@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Category} from '../../models/category.model';
 import {NgClass} from '@angular/common';
 
@@ -11,6 +11,11 @@ import {NgClass} from '@angular/common';
   styleUrl: './category-card.scss'
 })
 export class CategoryCard {
-  @Input() public category?: Category;
+  @Input() public category: Category;
+  @Input() public isCategorySelected?: boolean = false;
+  @Output() public selection = new EventEmitter<Category>();
 
+  public selectCategory() {
+    this.selection.emit(this.category);
+  }
 }

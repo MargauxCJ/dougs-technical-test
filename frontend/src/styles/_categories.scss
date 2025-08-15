@@ -1,11 +1,7 @@
 @import "./variables";
 
 $category-default-background: white;
-$category-default-border: $light;
-
 $category-hover-background: #F3F5F8;
-$category-hover-border: $light;
-
 $category-selected-background: $selected-background;
 $category-selected-border: $blue;
 
@@ -41,7 +37,7 @@ $category-selected-border: $blue;
     @include category-card-colors($category-hover-background);
   }
 
-  &:active {
+  &.selected {
     @include category-card-colors($category-selected-background, $category-selected-border);
   }
 }

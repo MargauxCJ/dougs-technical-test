@@ -12,7 +12,7 @@ header {
 .body-container {
   gap: 16px;
   margin: 32px 10%;
-  border: 1px solid $light;
+  border: $border;
   border-radius: 4px;
 }
 
@@ -46,7 +46,7 @@ footer {
 .search-container {
   background-color: white;
   padding: 16px 24px;
-  border-bottom: 1px solid $light;
+  border-bottom: $border;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
 }

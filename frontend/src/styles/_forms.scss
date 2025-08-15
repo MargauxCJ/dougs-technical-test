@@ -3,7 +3,7 @@
 input[type=text].search-bar {
   box-sizing: border-box;
   color: $dark;
-  border: 1px solid $light;
+  border: $border;
   border-radius: 4px;
   background-image: url('../../public/icons/search-icon.svg');
   background-position: 10px center;
@@ -16,7 +16,7 @@ input[type=text].search-bar {
 }
 
 select {
-  border: 1px solid $light;
+  border: $border;
   background-color: white;
   padding: 8px;
   border-radius: 4px;

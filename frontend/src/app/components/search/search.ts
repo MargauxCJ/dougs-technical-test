@@ -1,5 +1,5 @@
 import { Component, forwardRef, EventEmitter, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'app-search-bar',
@@ -7,6 +7,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     <input
       class="search-bar"
       type="text"
+      [ngModel]="searchValue"
       [value]="searchValue"
       (input)="onInput($event)"
       (blur)="onTouched()"
@@ -21,6 +22,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       font-size: 14px;
     }
   `],
+  imports: [
+    FormsModule
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

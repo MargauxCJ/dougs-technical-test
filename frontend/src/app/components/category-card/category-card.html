@@ -1,4 +1,4 @@
-<div class="category-card">
+<div class="category-card" [class.selected]="isCategorySelected" (click)="selectCategory()">
   @if (category.group; as group) {
     <div class="group-tag" [ngClass]="group.color">
       {{group.name}}

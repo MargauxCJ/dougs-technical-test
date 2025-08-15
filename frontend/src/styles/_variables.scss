@@ -1,7 +1,10 @@
+//Neutral colors
 $dark: #001A25;
 $medium: #58676D;
 $light: #DCE4ED;
+$white: #FFFFFF;
 
+//Group colors
 $blue: #11ABEC;
 $red: #FD755F;
 $yellow: #FAA11C;
@@ -9,5 +12,10 @@ $purple: #A76DEB;
 $green: #4AC18E;
 $pink: #FF8CC1;
 
+//category-card colors
 $selected-background: #F1F7FC;
 $description-color: #636970;
+
+
+//grid variables
+$border: 1px solid $light;
