@@ -1,11 +1,12 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
-import {provideHttpClient} from '@angular/common/http';
-import {CategoryService} from './category.service';
 import {Category} from '../models/category.model';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
+import {CategoryService} from './category.service';
+import {TestBed} from '@angular/core/testing';
+import {provideHttpClient} from '@angular/common/http';
+import {EXPECTED_CATEGORIES, MOCK_CATEGORIES, MOCK_VISIBLE_CATEGORY_IDS} from '../testing/mock-categories';
 
 describe('CategoryService', () => {
-  let service: CategoryService;
+  let categoryService: CategoryService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -13,10 +14,11 @@ describe('CategoryService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        CategoryService],
+        CategoryService,
+      ],
     });
 
-    service = TestBed.inject(CategoryService);
+    categoryService = TestBed.inject(CategoryService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -24,56 +26,37 @@ describe('CategoryService', () => {
     httpMock.verify();
   });
 
-  it('should fetch all categories', () => {
-    const mockCategories: Category[] = [
-      {id: 1, wording: 'Cat 1', description: 'I am a big description... I lied'},
-      {id: 2, wording: 'Cat 2', description: 'Lorem Ipsum blabliblu'},
-    ];
-
-    service.getAllCategories().subscribe((cats) => {
-      expect(cats).toEqual(mockCategories);
+  it('should get all categories', () => {
+    categoryService.getAllCategories().subscribe((categories: Category[]) => {
+      expect(categories).toEqual(MOCK_CATEGORIES);
     });
 
     const req = httpMock.expectOne('/api/all-categories');
     expect(req.request.method).toBe('GET');
-    req.flush(mockCategories);
+    req.flush(MOCK_CATEGORIES);
   });
 
-  it('should fetch visible category IDs', () => {
-    const mockVisible = [{id: 1}, {id: 3}];
-
-    service.getVisibleCategoriesIds().subscribe((ids) => {
-      expect(ids).toEqual(mockVisible);
+  it('should get visible category IDs', () => {
+    categoryService.getVisibleCategoriesIds().subscribe((ids: {id: number}[]) => {
+      expect(ids).toEqual(MOCK_VISIBLE_CATEGORY_IDS);
     });
 
     const req = httpMock.expectOne('/api/visible-categories');
     expect(req.request.method).toBe('GET');
-    req.flush(mockVisible);
+    req.flush(MOCK_VISIBLE_CATEGORY_IDS);
   });
 
-  it('should return only visible categories', () => {
-    const allCategories: Category[] = [
-      {id: 1, wording: 'Cat 1', description: 'I am a big description... I lied'},
-      {id: 2, wording: 'Cat 2', description: 'Lorem Ipsum blabliblu'},
-      {id: 1, wording: 'Cat 3', description: 'Im Blue dabedidabeda'},
-      {id: 2, wording: 'Cat 4', description: 'The game'},
-    ];
-    const visibleIds = [{id: 1}, {id: 3}];
-    const expectedVisibleCategories = [
-      {id: 1, wording: 'Cat 1', description: 'I am a big description... I lied'},
-      {id: 1, wording: 'Cat 3', description: 'Im Blue dabedidabeda'},
-    ];
-
-    service.getVisibleCategories().subscribe((cats) => {
-      expect(cats).toEqual(expectedVisibleCategories);
+  it('should return visible categories', () => {
+    categoryService.getVisibleCategories().subscribe((cats: Category[]) => {
+      expect(cats).toEqual(EXPECTED_CATEGORIES);
     });
 
     const allReq = httpMock.expectOne('/api/all-categories');
     expect(allReq.request.method).toBe('GET');
-    allReq.flush(allCategories);
+    allReq.flush(MOCK_CATEGORIES);
 
     const visibleReq = httpMock.expectOne('/api/visible-categories');
     expect(visibleReq.request.method).toBe('GET');
-    visibleReq.flush(visibleIds);
+    visibleReq.flush(MOCK_VISIBLE_CATEGORY_IDS);
   });
 });

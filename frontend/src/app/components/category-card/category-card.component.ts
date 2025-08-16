@@ -7,11 +7,11 @@ import {NgClass} from '@angular/common';
   imports: [
     NgClass,
   ],
-  templateUrl: './category-card.html',
-  standalone: true,
-  styleUrl: './category-card.scss'
+  templateUrl: './category-card.component.html',
+  styleUrl: './category-card.component.scss',
+  standalone: true
 })
-export class CategoryCard {
+export class CategoryCardComponent {
   @Input() public category: Category;
   @Input() public isCategorySelected?: boolean = false;
   @Input() public showTag = true;

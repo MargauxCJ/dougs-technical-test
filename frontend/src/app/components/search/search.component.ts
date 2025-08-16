@@ -29,12 +29,12 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/for
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => Search),
+      useExisting: forwardRef(() => SearchComponent),
       multi: true
     }
   ]
 })
-export class Search implements ControlValueAccessor {
+export class SearchComponent implements ControlValueAccessor {
   @Output() inputChange = new EventEmitter<string>();
 
   public searchValue = '';

@@ -19,12 +19,12 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/for
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => Select),
+      useExisting: forwardRef(() => SelectComponent),
       multi: true
     }
   ]
 })
-export class Select<T extends Record<string, any>> implements ControlValueAccessor, OnInit {
+export class SelectComponent<T extends Record<string, any>> implements ControlValueAccessor, OnInit {
   @Input() public options: T[] = [];
   @Input() public defaultOption?: {value: number, label: string} = {value: null, label: 'Tous'};
   @Input() public labelKey: keyof T = 'label' as keyof T;

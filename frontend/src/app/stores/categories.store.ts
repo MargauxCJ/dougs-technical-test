@@ -1,29 +1,32 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, combineLatest, map } from 'rxjs';
-import { Category } from '../models/category.model';
-import { CategoryService } from '../services/category.service';
-import { Group } from '../models/group.model';
+import {inject, Injectable} from '@angular/core';
+import {BehaviorSubject, combineLatest, map} from 'rxjs';
+import {Category} from '../models/category.model';
+import {CategoryService} from '../services/category.service';
+import {Group} from '../models/group.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesStore {
+
   private categoryService= inject(CategoryService);
 
-  private categories$ = new BehaviorSubject<Category[]>([]);
-  private search$ = new BehaviorSubject<string>('');
-  private selectGroup$ = new BehaviorSubject<number | null>(null);
-  public sort$ = new BehaviorSubject<string>('alphabet');
+  private _categories$ = new BehaviorSubject<Category[]>([]);
+  private _search$ = new BehaviorSubject<string>('');
+  private _selectGroup$ = new BehaviorSubject<number | null>(null);
+  private _sort$ = new BehaviorSubject<string>('alphabet');
 
-  constructor() {
-    this.loadCategories();
+  public init() {
+    if(!this._categories$.value.length) {
+      this.loadCategories();
+    }
   }
 
-  public loadCategories() {
+  private loadCategories() {
     this.categoryService.getVisibleCategories().subscribe(categories => {
-      this.categories$.next(categories);
+      this._categories$.next(categories);
     });
   }
 
-  public groups$ = this.categories$.pipe(
+  public groups$ = this._categories$.pipe(
     map(categories => {
       const group: Group[] = [];
       const seen = new Set<number>();
@@ -38,18 +41,18 @@ export class CategoriesStore {
   );
 
   public filteredCategories$ = combineLatest([
-    this.categories$,
-    this.search$,
-    this.selectGroup$,
-    this.sort$
+    this._categories$,
+    this._search$,
+    this._selectGroup$,
+    this._sort$
   ]).pipe(
     map(([categories, search, group, sort]) => {
       let res: Category[] = [...categories];
 
       if (search) {
         res = res.filter(cat =>
-          this.normalizeText(cat.wording)
-            .includes(this.normalizeText(search))
+          this.normalizeText(cat.wording).includes(this.normalizeText(search)) ||
+          this.normalizeText(cat.description || '').includes(this.normalizeText(search))
         );
       }
 
@@ -90,19 +93,27 @@ export class CategoriesStore {
     )
   );
 
+  public get categories$() {
+    return this._categories$.asObservable();
+  }
+
+  public get sort$() {
+    return this._sort$.asObservable();
+  }
+
   public setSearch(value: string): void {
-    this.search$.next(value);
+    this._search$.next(value);
   }
 
   public setGroup(groupId: number): void {
-      this.selectGroup$.next(groupId);
+      this._selectGroup$.next(groupId);
   }
 
   public setSort(value: string): void {
-    this.sort$.next(value);
+    this._sort$.next(value);
   }
 
-  //TODO: Get this function in a text.service or something like that ?
+  //TODO: Get this function in a text.service if more text manipulation, like using a wysiwig ?
   protected normalizeText(text: string): string {
     return text.normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')

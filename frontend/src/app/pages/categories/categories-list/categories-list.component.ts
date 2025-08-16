@@ -1,28 +1,28 @@
-import {Component, inject} from '@angular/core';
-import {CategoryCard} from '../../components/category-card/category-card';
-import {Search} from '../../components/search/search';
-import {SortButtonsComponent, SortOption} from '../../components/sort-buttons/sort-buttons';
+import {Component, inject, OnInit} from '@angular/core';
+import {CategoryCardComponent} from '../../../components/category-card/category-card.component';
+import {SearchComponent} from '../../../components/search/search.component';
+import {SortButtonsComponent, SortOption} from '../../../components/sort-buttons/sort-buttons.component';
 import {FormsModule} from '@angular/forms';
-import {CategoriesStore} from '../../stores/categories.store';
-import {Select} from '../../components/select/select';
-import {Category} from '../../models/category.model';
+import {CategoriesStore} from '../../../stores/categories.store';
+import {SelectComponent} from '../../../components/select/select.component';
+import {Category} from '../../../models/category.model';
 import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-categories-list',
   imports: [
-    CategoryCard,
-    Search,
+    CategoryCardComponent,
+    SearchComponent,
     SortButtonsComponent,
     FormsModule,
-    Select,
+    SelectComponent,
     CommonModule
   ],
-  templateUrl: './categories-list.html',
-  standalone: true,
-  styleUrl: './categories-list.scss'
+  templateUrl: './categories-list.component.html',
+  styleUrl: './categories-list.component.scss',
+  standalone: true
 })
-export class CategoriesList {
+export class CategoriesListComponent implements OnInit{
   public categoriesStore: CategoriesStore = inject(CategoriesStore);
   public categories$ = this.categoriesStore.filteredCategories$;
   public categoriesByGroup$ = this.categoriesStore.categoriesByGroup$;
@@ -34,6 +34,10 @@ export class CategoriesList {
     { label: 'Ordre alphabétique', value: 'alphabet', icon: 'icon-alphabet'},
     { label: 'Groupe de catégorie', value: 'group', icon: 'icon-group'},
   ];
+
+  public ngOnInit(): void {
+    this.categoriesStore.init()
+  }
 
   public onGroupSelect(value: number) {
     this.categoriesStore.setGroup(Number(value));
