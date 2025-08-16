@@ -1,7 +1,5 @@
 @use "../variables" as *;
-
-//category-card colors spec
-$description-color: #636970;
+@use "../mixins" as *;
 
 $category-default-background: $white;
 $category-hover-background: #F3F5F8;
