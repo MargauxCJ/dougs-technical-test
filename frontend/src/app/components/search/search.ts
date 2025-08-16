@@ -25,6 +25,7 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/for
   imports: [
     FormsModule
   ],
+  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -36,21 +37,21 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/for
 export class Search implements ControlValueAccessor {
   @Output() inputChange = new EventEmitter<string>();
 
-  searchValue: string = '';
-  disabled = false;
+  public searchValue = '';
+  public disabled = false;
 
   onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
 
-  writeValue(value: string): void {
+  public writeValue(value: string): void {
     this.searchValue = value ?? '';
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -58,7 +59,7 @@ export class Search implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onInput(event: Event) {
+  public onInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.searchValue = value;
     this.onChange(value);

@@ -6,14 +6,14 @@ import { Group } from '../models/group.model';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriesStore {
+  private categoryService= inject(CategoryService);
 
   private categories$ = new BehaviorSubject<Category[]>([]);
   private search$ = new BehaviorSubject<string>('');
   private selectGroup$ = new BehaviorSubject<number | null>(null);
-
   public sort$ = new BehaviorSubject<string>('alphabet');
 
-  constructor(private categoryService: CategoryService) {
+  constructor() {
     this.loadCategories();
   }
 
@@ -94,8 +94,8 @@ export class CategoriesStore {
     this.search$.next(value);
   }
 
-  public setGroup(groupId: number | null): void {
-    this.selectGroup$.next(groupId);
+  public setGroup(groupId: number): void {
+      this.selectGroup$.next(groupId);
   }
 
   public setSort(value: string): void {

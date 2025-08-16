@@ -8,12 +8,13 @@ import {NgClass} from '@angular/common';
     NgClass,
   ],
   templateUrl: './category-card.html',
+  standalone: true,
   styleUrl: './category-card.scss'
 })
 export class CategoryCard {
   @Input() public category: Category;
   @Input() public isCategorySelected?: boolean = false;
-  @Input() public showTag: boolean = true;
+  @Input() public showTag = true;
   @Output() public selection = new EventEmitter<Category>();
 
   public selectCategory() {

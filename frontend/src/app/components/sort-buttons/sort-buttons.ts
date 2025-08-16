@@ -32,6 +32,7 @@ export interface SortOption {
       margin: 0 16px;
     }
   `],
+  standalone: true,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -46,18 +47,18 @@ export class SortButtonsComponent implements ControlValueAccessor {
 
   selectedValue: string | null = null;
 
-  onChange = (value: string) => {};
-  onTouched = () => {};
+  onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
 
   writeValue(value: string): void {
     this.selectedValue = value;
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

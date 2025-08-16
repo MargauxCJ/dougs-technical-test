@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CategoryCard} from '../../components/category-card/category-card';
 import {Search} from '../../components/search/search';
 import {SortButtonsComponent, SortOption} from '../../components/sort-buttons/sort-buttons';
@@ -19,9 +19,10 @@ import {CommonModule} from '@angular/common';
     CommonModule
   ],
   templateUrl: './categories-list.html',
+  standalone: true,
   styleUrl: './categories-list.scss'
 })
-export class CategoriesList{
+export class CategoriesList {
   public categoriesStore: CategoriesStore = inject(CategoriesStore);
   public categories$ = this.categoriesStore.filteredCategories$;
   public categoriesByGroup$ = this.categoriesStore.categoriesByGroup$;
@@ -34,7 +35,7 @@ export class CategoriesList{
     { label: 'Groupe de catégorie', value: 'group', icon: 'icon-group'},
   ];
 
-  public onGroupSelect(value: any) {
+  public onGroupSelect(value: number) {
     this.categoriesStore.setGroup(Number(value));
   }
 
