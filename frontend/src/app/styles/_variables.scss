@@ -19,6 +19,16 @@ $light-purple: #f3edff;
 $light-green: #f0fff8;
 $light-pink: #fff2f7;
 
+$group-colors: (
+  blue: (text: $blue, bg: $light-blue),
+  red: (text: $red, bg: $light-red),
+  yellow: (text: $yellow, bg: $light-yellow),
+  purple: (text: $purple, bg: $light-purple),
+  green: (text: $green, bg: $light-green),
+  pink: (text: $pink, bg: $light-pink),
+);
+
+
 $selected-background: #F1F7FC;
 
 $text-color: $dark;

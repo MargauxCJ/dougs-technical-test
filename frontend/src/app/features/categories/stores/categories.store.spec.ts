@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {of} from 'rxjs';
 import {CategoriesStore} from './categories.store';
 import {CategoryService} from '../services/category.service';
-import {MOCK_CATEGORIES} from '../testing/mock-categories';
+import {MOCK_CATEGORIES} from '../../../testing/mock-categories';
 
 describe('CategoriesStore', () => {
   let categoriesStore: CategoriesStore;

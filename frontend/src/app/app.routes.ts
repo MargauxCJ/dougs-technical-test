@@ -8,6 +8,6 @@ export const routes: Routes = [
   },
   {
     path: 'categories',
-    loadComponent: () => import('./pages/categories/categories-list/categories-list.component').then(m => m.CategoriesListComponent)
+    loadComponent: () => import('./features/categories/pages/categories-list/categories-list.component').then(m => m.CategoriesListComponent)
   },
 ];

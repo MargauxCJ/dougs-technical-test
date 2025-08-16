@@ -1,4 +1,4 @@
-@use "./variables" as *;
+@use "../variables" as *;
 
 //category-card colors spec
 $description-color: #636970;
@@ -7,13 +7,6 @@ $category-default-background: $white;
 $category-hover-background: #F3F5F8;
 $category-selected-background: $selected-background;
 $category-selected-border: $blue;
-
-@mixin category-card-colors($bg, $border:transparent) {
-  h2 {color: $dark}
-  background-color: $bg;
-  border: 1px solid $border;
-  color: $description-color;
-}
 
 .category-card {
   display: flex;
@@ -34,13 +27,15 @@ $category-selected-border: $blue;
     margin: 4px 0
   }
 
-  @include category-card-colors($category-default-background);
+  @include card-colors($category-default-background);
 
   &:hover {
-    @include category-card-colors($category-hover-background);
+    @include card-colors($category-hover-background);
   }
 
   &.selected {
-    @include category-card-colors($category-selected-background, $category-selected-border);
+    @include card-colors($category-selected-background, $category-selected-border);
   }
 }
+
+

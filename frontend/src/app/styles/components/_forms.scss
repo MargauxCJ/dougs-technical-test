@@ -1,11 +1,11 @@
-@use "./variables" as *;
+@use "../variables" as *;
 
 input[type=text].search-bar {
   box-sizing: border-box;
   color: $dark;
   border: $border;
   border-radius: $border-radius-input;
-  background-image: url('../../public/icons/search-icon.svg');
+  background-image: url('../../../../public/icons/search-icon.svg');
   background-position: 10px center;
   background-repeat: no-repeat;
   padding: 8px 20px 8px 40px;

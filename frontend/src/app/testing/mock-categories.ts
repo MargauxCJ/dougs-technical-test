@@ -1,5 +1,5 @@
-import { Category } from '../models/category.model';
-import {Group} from '../models/group.model';
+import { Category } from '../features/categories/models/category.model';
+import {Group} from '../features/categories/models/group.model';
 
 export const MOCK_GROUPS: Group[] = [
   {id: 1, name: 'Banque & Assurance', color: 'm-blue'},

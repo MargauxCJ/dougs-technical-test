@@ -1,0 +1,16 @@
+@use "sass:map";
+@use "../variables" as *;
+@use "../mixins" as *;
+
+@each $name, $color in $group-colors {
+  .m-#{"" + $name} {
+    @include group-tag-colors(map.get($color, text), map.get($color, bg));
+  }
+}
+
+.group-tag {
+  border-radius: 100px;
+  padding: 2px 12px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}

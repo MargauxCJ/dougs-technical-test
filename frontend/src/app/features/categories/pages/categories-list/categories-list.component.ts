@@ -1,11 +1,11 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {CategoryCardComponent} from '../../../components/category-card/category-card.component';
-import {SearchComponent} from '../../../components/search/search.component';
-import {SortButtonsComponent, SortOption} from '../../../components/sort-buttons/sort-buttons.component';
+import {CategoryCardComponent} from '../../components/category-card/category-card.component';
+import {SearchComponent} from '../../../../shared/ui/search/search.component';
+import {SortButtonsComponent, SortOption} from '../../../../shared/ui/sort-buttons/sort-buttons.component';
 import {FormsModule} from '@angular/forms';
-import {CategoriesStore} from '../../../stores/categories.store';
-import {SelectComponent} from '../../../components/select/select.component';
-import {Category} from '../../../models/category.model';
+import {CategoriesStore} from '../../stores/categories.store';
+import {SelectComponent} from '../../../../shared/ui/select/select.component';
+import {Category} from '../../models/category.model';
 import {CommonModule} from '@angular/common';
 
 @Component({

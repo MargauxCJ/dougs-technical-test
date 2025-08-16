@@ -1,0 +1,30 @@
+@use "variables" as *;
+
+@mixin button($bg, $color) {
+  padding: 12px 7.5px;
+  background-color: $bg;
+  border-radius: $border-radius-btn;
+  color: $color;
+  height: fit-content;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin card-colors($bg, $border:transparent) {
+  h2 {color: $dark}
+  background-color: $bg;
+  border: 1px solid $border;
+  color: $description-color;
+}
+
+@mixin group-tag-colors($color, $bg) {
+  background-color: $bg;
+  color: $color;
+}

@@ -1,0 +1,37 @@
+@use "../variables";
+
+body,html, router-outlet {
+  min-height: 100vh;
+  height: 100vh;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  background-color: variables.$bg;
+  margin: 0;
+}
+
+// Could have been in a scss page separate if I have done layouts header and footer
+// but for a one page test it seem a little bit overkill
+header {
+  background-color: variables.$container-bg;
+  padding: 15px 10%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+footer {
+  position: fixed;
+  width: stretch;
+  bottom: 0;
+  background-color:  variables.$container-bg;
+  padding: 15px 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  height: variables.$footer-height;
+}

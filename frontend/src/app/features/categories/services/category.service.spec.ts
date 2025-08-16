@@ -3,7 +3,7 @@ import {HttpTestingController, provideHttpClientTesting} from '@angular/common/h
 import {CategoryService} from './category.service';
 import {TestBed} from '@angular/core/testing';
 import {provideHttpClient} from '@angular/common/http';
-import {EXPECTED_CATEGORIES, MOCK_CATEGORIES, MOCK_VISIBLE_CATEGORY_IDS} from '../testing/mock-categories';
+import {EXPECTED_CATEGORIES, MOCK_CATEGORIES, MOCK_VISIBLE_CATEGORY_IDS} from '../../../testing/mock-categories';
 
 describe('CategoryService', () => {
   let categoryService: CategoryService;
